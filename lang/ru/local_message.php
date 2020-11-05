@@ -32,3 +32,6 @@ $string['pluginadministration'] = 'Уведомления - настройки';
 $string['manageheader'] = 'Список уведомлений';
 $string['messagetextinput'] = 'Текст уведомления';
 $string['messagetypeselect'] = 'Тип уведомления';
+$string['messageformcancelled'] = 'Вы отменили добавление уведомления';
+$string['messageformsubmited'] = 'Вы добавили новое уведомление';
+$string['createmessage'] = 'Создать уведомление';

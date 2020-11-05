@@ -22,14 +22,28 @@
  */
 
 require_once(__DIR__ . '/../../config.php');
+require_once($CFG->dirroot . '/local/message/classes/form/editmessageform.php');
+
+global $DB;
+
 $PAGE->set_url(new moodle_url('/local/message/manage.php'));
 $PAGE->set_context(\context_system::instance());
 $PAGE->set_title('Manage messages');
 
+$messages = $DB->get_records('local_message');
+$messages = array_values($messages);
+
+for ($i = 0; $i < count($messages); $i++) {
+    $messages[$i]->messagetype = editmessageform::MSG_TYPE[$messages[$i]->messagetype];
+}
+
 echo $OUTPUT->header();
 
 $templatecontext = (object)[
-        'texttodisplay' => 'here is example'
+    'manageheader' => get_string('manageheader', 'local_message'),
+    'messages' => array_values($messages),
+    'editurl' => new moodle_url('/local/message/edit.php'),
+    'createmessage' => get_string('createmessage', 'local_message'),
 ];
 
 echo $OUTPUT->render_from_template('local_message/manage', $templatecontext);

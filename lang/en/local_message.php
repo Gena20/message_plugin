@@ -32,3 +32,6 @@ $string['pluginadministration'] = 'Message settings';
 $string['manageheader'] = 'List of messages';
 $string['messagetextinput'] = 'Message text';
 $string['messagetypeselect'] = 'Message type';
+$string['messageformcancelled'] = 'You cancelled the message form';
+$string['messageformsubmited'] = 'You added a new message';
+$string['createmessage'] = 'Create message';

@@ -24,5 +24,13 @@
     }
 }}
 
-<h1>Hello</h1>
-<p>{{ texttodisplay }}</p>
+<h1>{{manageheader}}</h1>
+<ul>
+    {{#messages}}
+        <li>{{messagetext}} ({{messagetype}})</li>
+    {{/messages}}
+</ul>
+
+<hr>
+
+<input type="button" class="btn btn-primary" value="{{createmessage}}" onclick="location.href='{{editurl}}'">

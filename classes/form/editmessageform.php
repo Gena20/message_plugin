@@ -23,7 +23,14 @@
 
 require_once("$CFG->libdir/formslib.php");
 
-class edit extends moodleform {
+class editmessageform extends moodleform {
+    const MSG_TYPE = [
+        \core\output\notification::NOTIFY_WARNING,
+        \core\output\notification::NOTIFY_SUCCESS,
+        \core\output\notification::NOTIFY_ERROR,
+        \core\output\notification::NOTIFY_INFO,
+    ];
+
     //Add elements to form
     public function definition() {
         global $CFG;
@@ -34,14 +41,7 @@ class edit extends moodleform {
         $mform->setType('messagetext', PARAM_NOTAGS);                   //Set type of element
         $mform->setDefault('messagetext', get_string('messagetextinput', 'local_message'));        //Default value
 
-        $choices = [
-            \core\output\notification::NOTIFY_WARNING,
-            \core\output\notification::NOTIFY_SUCCESS,
-            \core\output\notification::NOTIFY_ERROR,
-            \core\output\notification::NOTIFY_INFO,
-        ];
-
-        $mform->addElement('select', 'messagetype', get_string('messagetypeselect', 'local_message'), $choices);
+        $mform->addElement('select', 'messagetype', get_string('messagetypeselect', 'local_message'), self::MSG_TYPE);
         $mform->setDefault('messagetype', 3);
 
         $this->add_action_buttons();

@@ -24,5 +24,5 @@
 defined('MOODLE_INTERNAL') || die();
 
 function local_message_before_footer() {
-    \core\notification::add("some message", \core\output\notification::NOTIFY_WARNING);
+    // \core\notification::add("some message", \core\output\notification::NOTIFY_WARNING);
 }

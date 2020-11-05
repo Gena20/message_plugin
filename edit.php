@@ -22,23 +22,37 @@
  */
 
 require_once(__DIR__ . '/../../config.php');
-require_once($CFG->dirroot . '/local/message/classes/form/edit.php');
+require_once($CFG->dirroot . '/local/message/classes/form/editmessageform.php');
+
+global $DB;
 
 $PAGE->set_url(new moodle_url('/local/message/edit.php'));
 $PAGE->set_context(\context_system::instance());
 $PAGE->set_title('Edit');
 
 
-$mform = new edit();
+$mform = new editmessageform();
 
+
+
+if ($mform->is_cancelled()) {
+    // Go back to manage page
+    redirect($CFG->wwwroot . '/local/message/manage.php', get_string('messageformcancelled', 'local_message'));
+} else if ($fromform = $mform->get_data()) {
+    // Insert data into put database table
+    $record = new stdClass();
+    $record->messagetext = $fromform->messagetext;
+    $record->messagetype = $fromform->messagetype;
+
+    $DB->insert_record('local_message', $record);
+
+    // Go back to manage page
+    redirect($CFG->wwwroot . '/local/message/manage.php',
+            get_string('messageformsubmited', 'local_message') . ": $record->messagetext");
+
+}
 
 echo $OUTPUT->header();
-
-//$templatecontext = (object)[
-//        'texttodisplay' => 'List of all current messages'
-//];
-
-//echo $OUTPUT->render_from_template('local_message/manage', $templatecontext);
 
 $mform->display();
 

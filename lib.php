@@ -21,8 +21,31 @@
  * @var stdClass $plugin
  */
 
+require_once($CFG->dirroot . '/local/message/classes/form/editmessageform.php');
+
 defined('MOODLE_INTERNAL') || die();
 
 function local_message_before_footer() {
-    // \core\notification::add("some message", \core\output\notification::NOTIFY_WARNING);
+    global $DB, $USER;
+
+    $sql = 'SELECT lm.id, lm.messagetext, lm.messagetype 
+            FROM {local_message} AS lm 
+            LEFT OUTER JOIN {local_message_read} AS lmr ON lm.id = lmr.message_id
+            WHERE lmr.user_id <> :user_id 
+               OR lmr.user_id IS NULL';
+    $params = ['user_id' => $USER->id];
+    $messages = $DB->get_records_sql($sql, $params);
+
+    foreach ($messages as $message)
+    {
+        // Display the messages
+        \core\notification::add($message->messagetext, editmessageform::MSG_TYPE[$message->messagetype]);
+
+        $readrecord = new stdClass();
+        $readrecord->message_id = $message->id;
+        $readrecord->user_id = $USER->id;
+        $readrecord->time_read = time();
+
+        $DB->insert_record('local_message_read', $readrecord);
+    }
 }
